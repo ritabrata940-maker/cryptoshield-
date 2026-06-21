@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoShield Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            font-family: 'Courier New', monospace;
+        }
+        body {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #00ff88;
+            overflow-x: hidden;
+        }
+        .glow {
+            text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
+        }
+        .console-box {
+            background: #0a0e27;
+            border: 2px solid #00ff88;
+            box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.2), 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+        .input-field {
+            background: #1a1f3a;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+        .input-field:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff88;
+            border-color: #00ffff;
+            color: #00ffff;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff88 0%, #00ffff 100%);
+            color: #0a0e27;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+        }
+        .slider {
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, #00ff88, #00ffff);
+            outline: none;
+            border-radius: 5px;
+            border: 1px solid #00ff88;
+        }
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #00ff88;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff88;
+        }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #00ff88;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px #00ff88;
+        }
+        .log-entry {
+            margin: 8px 0;
+            font-size: 13px;
+            opacity: 0;
+            animation: slideIn 0.4s ease forwards;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .cipher-tab {
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .cipher-tab.active {
+            border-bottom-color: #00ff88;
+            color: #00ffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen p-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="mb-12 text-center">
+                <h1 class="text-5xl font-bold glow mb-2">CryptoShield Academy</h1>
+                <p class="text-sm text-gray-400">[ Cryptographic Playground v1.0 ]</p>
+                <div class="mt-4 text-xs text-gray-500">
+                    STATUS: <span class="text-green-400">INITIALIZED</span> | 
+                    MODE: <span class="text-cyan-400">ENCRYPTION</span> | 
+                    TIMESTAMP: <span id="timestamp"></span>
+                </div>
+            </div>
+
+            <!-- Main Container -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Caesar Cipher Section -->
+                <div class="console-box p-6 rounded-lg">
+                    <h2 class="text-2xl font-bold glow mb-6">CAESAR CIPHER</h2>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm mb-2">Input Text:</label>
+                        <textarea 
+                            id="caesarInput" 
+                            class="input-field w-full h-24 p-3 rounded mb-4"
+                            placeholder="Enter your message..."
+                        ></textarea>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm mb-4">Shift Value: <span id="shiftValue" class="text-cyan-400 font-bold">3</span></label>
+                        <input 
+                            type="range" 
+                            id="caesarShift" 
+                            class="slider w-full" 
+                            min="0" 
+                            max="25" 
+                            value="3"
+                        >
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <button onclick="encryptCaesar()" class="btn-primary py-3 px-4 rounded font-mono text-sm">
+                            ENCRYPT
+                        </button>
+                        <button onclick="decryptCaesar()" class="btn-primary py-3 px-4 rounded font-mono text-sm">
+                            DECRYPT
+                        </button>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm mb-2">Output:</label>
+                        <textarea 
+                            id="caesarOutput" 
+                            class="input-field w-full h-24 p-3 rounded" 
+                            placeholder="Encrypted/Decrypted text will appear here..."
+                            readonly
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- XOR Cipher Section -->
+                <div class="console-box p-6 rounded-lg">
+                    <h2 class="text-2xl font-bold glow mb-6">XOR CIPHER</h2>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm mb-2">Input Text:</label>
+                        <textarea 
+                            id="xorInput" 
+                            class="input-field w-full h-24 p-3 rounded mb-4"
+                            placeholder="Enter your message..."
+                        ></textarea>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm mb-2">XOR Key (0-255):</label>
+                        <input 
+                            type="number" 
+                            id="xorKey" 
+                            class="input-field w-full p-3 rounded" 
+                            min="0" 
+                            max="255" 
+                            value="42"
+                            placeholder="Enter XOR key..."
+                        >
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <button onclick="encryptXOR()" class="btn-primary py-3 px-4 rounded font-mono text-sm">
+                            ENCRYPT
+                        </button>
+                        <button onclick="decryptXOR()" class="btn-primary py-3 px-4 rounded font-mono text-sm">
+                            DECRYPT
+                        </button>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm mb-2">Output (Hex):</label>
+                        <textarea 
+                            id="xorOutput" 
+                            class="input-field w-full h-24 p-3 rounded" 
+                            placeholder="Encrypted output in hexadecimal..."
+                            readonly
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Console Log -->
+            <div class="console-box p-6 rounded-lg">
+                <h2 class="text-lg font-bold glow mb-4">SYSTEM CONSOLE</h2>
+                <div id="console" class="h-48 overflow-y-auto bg-black bg-opacity-50 p-4 rounded border border-gray-700">
+                    <div class="log-entry"><span class="text-cyan-400">[INIT]</span> CryptoShield Academy v1.0 loaded</div>
+                    <div class="log-entry"><span class="text-cyan-400">[INIT]</span> Cipher engines initialized</div>
+                    <div class="log-entry"><span class="text-cyan-400">[INIT]</span> Ready for encryption/decryption</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update timestamp
+        function updateTimestamp() {
+            document.getElementById('timestamp').textContent = new Date().toLocaleTimeString();
+        }
+        updateTimestamp();
+        setInterval(updateTimestamp, 1000);
+
+        // Shift value update
+        document.getElementById('caesarShift').addEventListener('input', (e) => {
+            document.getElementById('shiftValue').textContent = e.target.value;
+        });
+
+        // Console logging
+        function addLog(message, type = 'INFO') {
+            const console_el = document.getElementById('console');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            
+            const colors = {
+                'INFO': 'text-green-400',
+                'ENCRYPT': 'text-yellow-400',
+                'DECRYPT': 'text-cyan-400',
+                'ERROR': 'text-red-400'
+            };
+            
+            entry.innerHTML = `<span class="${colors[type]}">[${type}]</span> ${message}`;
+            console_el.appendChild(entry);
+            console_el.scrollTop = console_el.scrollHeight;
+        }
+
+        // Caesar Cipher
+        function caesarShift(text, shift) {
+            return text.split('').map(char => {
+                if (/[a-z]/.test(char)) {
+                    return String.fromCharCode((char.charCodeAt(0) - 97 + shift) % 26 + 97);
+                } else if (/[A-Z]/.test(char)) {
+                    return String.fromCharCode((char.charCodeAt(0) - 65 + shift) % 26 + 65);
+                }
+                return char;
+            }).join('');
+        }
+
+        function encryptCaesar() {
+            const input = document.getElementById('caesarInput').value;
+            const shift = parseInt(document.getElementById('caesarShift').value);
+            
+            if (!input.trim()) {
+                addLog('Error: Input text is empty', 'ERROR');
+                return;
+            }
+            
+            addLog('Caesar cipher initialization with shift: ' + shift, 'INFO');
+            addLog('Processing plaintext...', 'ENCRYPT');
+            
+            const encrypted = caesarShift(input, shift);
+            document.getElementById('caesarOutput').value = encrypted;
+            
+            addLog('Ciphertext generated successfully', 'ENCRYPT');
+        }
+
+        function decryptCaesar() {
+            const input = document.getElementById('caesarInput').value;
+            const shift = parseInt(document.getElementById('caesarShift').value);
+            
+            if (!input.trim()) {
+                addLog('Error: Input text is empty', 'ERROR');
+                return;
+            }
+            
+            addLog('Caesar cipher decryption initiated', 'INFO');
+            addLog('Reversing shift transformation...', 'DECRYPT');
+            
+            const decrypted = caesarShift(input, 26 - shift);
+            document.getElementById('caesarOutput').value = decrypted;
+            
+            addLog('Plaintext recovered successfully', 'DECRYPT');
+        }
+
+        // XOR Cipher
+        function xorEncrypt(text, key) {
+            let hex = '';
+            for (let i = 0; i < text.length; i++) {
+                const charCode = text.charCodeAt(i);
+                const xored = charCode ^ key;
+                hex += xored.toString(16).padStart(2, '0');
+            }
+            return hex;
+        }
+
+        function xorDecrypt(hex, key) {
+            let text = '';
+            for (let i = 0; i < hex.length; i += 2) {
+                const byte = parseInt(hex.substr(i, 2), 16);
+                const char = String.fromCharCode(byte ^ key);
+                text += char;
+            }
+            return text;
+        }
+
+        function encryptXOR() {
+            const input = document.getElementById('xorInput').value;
+            const key = parseInt(document.getElementById('xorKey').value);
+            
+            if (!input.trim()) {
+                addLog('Error: Input text is empty', 'ERROR');
+                return;
+            }
+            
+            if (isNaN(key) || key < 0 || key > 255) {
+                addLog('Error: Invalid XOR key (0-255)', 'ERROR');
+                return;
+            }
+            
+            addLog('XOR engine initialized with key: ' + key, 'INFO');
+            addLog('Applying bitwise XOR transformation...', 'ENCRYPT');
+            
+            const encrypted = xorEncrypt(input, key);
+            document.getElementById('xorOutput').value = encrypted;
+            
+            addLog('Hexadecimal ciphertext generated', 'ENCRYPT');
+        }
+
+        function decryptXOR() {
+            const input = document.getElementById('xorOutput').value;
+            const key = parseInt(document.getElementById('xorKey').value);
+            
+            if (!input.trim()) {
+                addLog('Error: Ciphertext is empty', 'ERROR');
+                return;
+            }
+            
+            if (isNaN(key) || key < 0 || key > 255) {
+                addLog('Error: Invalid XOR key (0-255)', 'ERROR');
+                return;
+            }
+            
+            try {
+                addLog('XOR decryption sequence initiated', 'INFO');
+                addLog('Reversing bitwise operations...', 'DECRYPT');
+                
+                const decrypted = xorDecrypt(input, key);
+                document.getElementById('xorInput').value = decrypted;
+                
+                addLog('Plaintext successfully recovered', 'DECRYPT');
+            } catch (e) {
+                addLog('Error: Invalid hex format', 'ERROR');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -53,9 +53,9 @@ Tailored for cybersecurity developer experience
 
 Option 1: Use Live Demo
 
-Visit: https://ritabrata940-maker.github.io/cryptoshield
+Visit: https://serene-pavlova-4e3132.netlify.app/
 
-(Live link automatically generated once you enable GitHub Pages)
+
 
 Option 2: Run Locally
 
